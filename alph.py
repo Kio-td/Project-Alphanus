@@ -2,9 +2,10 @@ import discord
 import os, sys
 import configparser
 import requests
+import random
 
 
-version = 1.20
+version = 1.3
 
 if "update" in sys.argv:
 	config = configparser.ConfigParser()
@@ -25,7 +26,7 @@ if "update" in sys.argv:
 	print("Updated. Restarting.")
 	os.execl(sys.executable, sys.executable, os.path.basename(__file__))
 
-r = requests.get("https://raw.githubusercontent.com/AegisTeam/Project-Alphanus/master/version")
+r = requests.get("https://raw.githubusercontent.com/AegisTeam/Project-Alphanus/master/version?" + str(random.randint(18,88)))
 
 if os.path.isfile('./config.ini'):
 	Config = configparser.ConfigParser()
@@ -67,7 +68,7 @@ class aclient(discord.Client):
 					await message.author.send("Goodnight.")
 					sys.exit(0)
 				elif message.content.startswith("update"):
-					r = requests.get("https://raw.githubusercontent.com/AegisTeam/Project-Alphanus/master/version")
+					r = requests.get("https://raw.githubusercontent.com/AegisTeam/Project-Alphanus/master/version?" + str(random.randint(18,88)))
 					if float(r.text) == version:
 						await message.author.send("I'm already at the latest version. I don't need to update.")
 					else:
