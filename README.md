@@ -6,7 +6,7 @@ Everyone knows that spammers are smart enough to avoid the owner of the server, 
 
 ## Install
 ```bash
-pip install -U configparser discord.py
+pip install -U configparser discord.py requests
 git clone https://github.com/AegisTeam/Project-Alphanus && cd Project-Alphanus
 python ./alph.py
 ```
