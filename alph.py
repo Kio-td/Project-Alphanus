@@ -7,13 +7,13 @@ import time
 from raven.handlers.logging import SentryHandler
 from raven.conf import setup_logging
 import logging
-handler = SentryHandler('https://e463da63a8064592a21b723f519b56c9:ed2f2a227763443cba87153c3064f4a0@sentry.io/1188244')
+handler = SentryHandler('https://ae2772c9ec7f4668bb92a12aa5ec932a:013a2755e15f457a9d7a68c490ff45e5@sentry.io/1188281')
 handler.setLevel(logging.DEBUG)
 setup_logging(handler)
 logger = logging.getLogger(__name__)
 logger.addHandler(handler)
 sys.stderr = logger.error
-version = 1.80
+version = 1.81
 
 
 if "update" in sys.argv:
