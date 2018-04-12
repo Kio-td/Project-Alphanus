@@ -5,7 +5,7 @@ import requests
 import random
 
 
-version = 1.3
+version = 1.4
 
 if "update" in sys.argv:
 	config = configparser.ConfigParser()
@@ -49,7 +49,7 @@ class aclient(discord.Client):
 		print("--Info--")
 		print("I am user " + client.user.name + "#" + str(client.user.discriminator))
 		print("On " + str(len(client.guilds)) + " guilds")
-		print("With 2 commands")
+		print("With 3 commands")
 		print("Current Version: " + str(version))
 		if float(r.text) != version:
 			print("Version " + r.text + " is available! please update ASAP!")
@@ -85,7 +85,7 @@ class aclient(discord.Client):
 					embed.set_author(name="Project Alphanus - A Honeytrap for Aegis")
 					embed.add_field(name="By", value="KioˣAegis", inline=True)
 					embed.add_field(name="Version", value=version, inline=True)
-					embed.add_field(name="Commands", value="``restart``, ``shutdown``", inline=False)
+					embed.add_field(name="Commands", value="``restart``, ``shutdown``, ``update``", inline=False)
 					await message.author.send(embed=embed)
 				return
 			embed = discord.Embed()
