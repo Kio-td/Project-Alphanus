@@ -3,9 +3,9 @@ import os, sys
 import configparser
 import requests
 import random
+import time
 
-
-version = 1.51
+version = 1.52
 
 if "update" in sys.argv:
 	config = configparser.ConfigParser()
