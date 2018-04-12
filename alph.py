@@ -13,7 +13,7 @@ setup_logging(handler)
 logger = logging.getLogger(__name__)
 logger.addHandler(handler)
 sys.stderr = logger.error
-version = 1.55
+version = 1.80
 
 
 if "update" in sys.argv:
