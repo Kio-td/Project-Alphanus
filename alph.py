@@ -4,8 +4,17 @@ import configparser
 import requests
 import random
 import time
-
+from raven.handlers.logging import SentryHandler
+from raven.conf import setup_logging
+import logging
+handler = SentryHandler('https://e463da63a8064592a21b723f519b56c9:ed2f2a227763443cba87153c3064f4a0@sentry.io/1188244')
+handler.setLevel(logging.DEBUG)
+setup_logging(handler)
+logger = logging.getLogger(__name__)
+logger.addHandler(handler)
+sys.stderr = logger.error
 version = 1.55
+
 
 if "update" in sys.argv:
 	config = configparser.ConfigParser()
@@ -43,6 +52,8 @@ else:
 	os.execl(sys.executable, sys.executable, *sys.argv)
 
 class aclient(discord.Client):
+
+
 	async def on_ready(self):
 		print(chr(27) + "[2J")
 		print("Project Alphanus - Copyright, KioˣAegis")
