@@ -4,7 +4,7 @@ import configparser
 import requests
 
 
-version = 1.20
+version = 1.3
 
 if "update" in sys.argv:
 	config = configparser.ConfigParser()
