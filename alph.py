@@ -24,7 +24,7 @@ class aclient(discord.Client):
 		print("--Info--")
 		print("I am user " + client.user.name + "#" + str(client.user.discriminator))
 		print("On " + str(len(client.guilds)) + " guilds")
-		print("With 1 command")
+		print("With 2 commands")
 		print("--Info--")
 		print("Alright, whose ready to catch some bad guys?")
 	async def on_message(self, message):
@@ -46,7 +46,7 @@ class aclient(discord.Client):
 					embed.set_author(name="Project Alphanus - A Honeytrap for Aegis")
 					embed.add_field(name="By", value="KioˣAegis", inline=True)
 					embed.add_field(name="Version", value="1.12", inline=True)
-					embed.add_field(name="Commands", value="``restart`` ", inline=False)
+					embed.add_field(name="Commands", value="``restart``, ``shutdown``", inline=False)
 					await message.author.send(embed=embed)
 				return
 			embed = discord.Embed()
