@@ -5,7 +5,7 @@ import requests
 import random
 import time
 
-version = 1.52
+version = 1.530
 
 if "update" in sys.argv:
 	config = configparser.ConfigParser()
