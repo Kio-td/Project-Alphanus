@@ -5,7 +5,7 @@ import requests
 import random
 
 
-version = 1.41
+version = 1.5
 
 if "update" in sys.argv:
 	config = configparser.ConfigParser()
@@ -49,7 +49,7 @@ class aclient(discord.Client):
 		print("--Info--")
 		print("I am user " + client.user.name + "#" + str(client.user.discriminator))
 		print("On " + str(len(client.guilds)) + " guilds")
-		print("With 3 commands")
+		print("With 4 commands")
 		print("Current Version: " + str(version))
 		if float(r.text) != version:
 			print("Version " + r.text + " is available! please update ASAP!")
@@ -78,9 +78,9 @@ class aclient(discord.Client):
 						f1.close()
 						print("Restarting.")
 						os.execl(sys.executable, sys.executable, *sys.argv, "update")
-			    elif message.content.startswith("ping"):
-			    	channel = message.channel
-			    	t1 = time.perf_counter()
+				elif message.content.startswith("ping"):
+					channel = message.channel
+					t1 = time.perf_counter()
 					await message.channel.trigger_typing()
 					t2 = time.perf_counter()
 					embed = discord.Embed()
@@ -93,7 +93,7 @@ class aclient(discord.Client):
 					embed.set_author(name="Project Alphanus - A Honeytrap for Aegis")
 					embed.add_field(name="By", value="KioˣAegis", inline=True)
 					embed.add_field(name="Version", value=version, inline=True)
-					embed.add_field(name="Commands", value="``restart``, ``shutdown``, ``update``", inline=False)
+					embed.add_field(name="Commands", value="``restart``, ``shutdown``, ``update``, ``ping``", inline=False)
 					await message.author.send(embed=embed)
 				return
 			embed = discord.Embed()
