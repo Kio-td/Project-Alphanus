@@ -1,4 +1,5 @@
 # Project Alphanus - A fair DM Honeypot.
+![Travis CI](https://api.travis-ci.org/AegisTeam/Project-Alphanus.svg?branch=master)
 
 This is Project Alphanus - A DM Honeypot deisnged to get rid of any and all DMVertisers.
 
