@@ -8,4 +8,5 @@ Everyone knows that spammers are smart enough to avoid the owner of the server, 
 ```bash
 pip install -U configparser discord.py
 git clone https://github.com/AegisTeam/Project-Alphanus && cd Project-Alphanus
-python ./alph.py```
+python ./alph.py
+```
