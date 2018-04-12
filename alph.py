@@ -5,7 +5,7 @@ import requests
 import random
 import time
 
-version = 1.53
+version = 1.55
 
 if "update" in sys.argv:
 	config = configparser.ConfigParser()
@@ -72,11 +72,13 @@ class aclient(discord.Client):
 					if float(r.text) == version:
 						await message.author.send("I'm already at the latest version. I don't need to update.")
 					else:
+						await message.author.send("Downloading...")
 						r = requests.get("https://raw.githubusercontent.com/AegisTeam/Project-Alphanus/master/alph.py")
+						await message.author.send("Updating...")
 						f1 = open('./alph.py', 'w+')
 						f1.write(r.text)
 						f1.close()
-						print("Restarting.")
+						await message.author.send("Restarting...")
 						os.execl(sys.executable, sys.executable, *sys.argv, "update")
 				elif message.content.startswith("ping"):
 					channel = message.channel
