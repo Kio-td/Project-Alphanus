@@ -5,7 +5,7 @@ import requests
 import random
 
 
-version = 1.4
+version = 1.41
 
 if "update" in sys.argv:
 	config = configparser.ConfigParser()
@@ -45,7 +45,7 @@ else:
 class aclient(discord.Client):
 	async def on_ready(self):
 		print(chr(27) + "[2J")
-		print("Project Alphanus - Copyright, AegisXKio")
+		print("Project Alphanus - Copyright, KioˣAegis")
 		print("--Info--")
 		print("I am user " + client.user.name + "#" + str(client.user.discriminator))
 		print("On " + str(len(client.guilds)) + " guilds")
