@@ -1,6 +1,6 @@
   language: python
   python:
     - "3.6"
-  install: pip install --user configparser discord.py requests raven
+  install: pip install -U configparser discord.py requests raven
   script:
     - alph.py
