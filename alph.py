@@ -15,6 +15,8 @@ logger.addHandler(handler)
 sys.stderr = logger.error
 version = 1.81
 
+if "test" in sys.argv:
+	print("I've been made to work! Yay!")
 
 if "update" in sys.argv:
 	config = configparser.ConfigParser()
