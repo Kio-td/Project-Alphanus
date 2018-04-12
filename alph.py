@@ -5,7 +5,7 @@ import requests
 import random
 
 
-version = 1.5
+version = 1.51
 
 if "update" in sys.argv:
 	config = configparser.ConfigParser()
