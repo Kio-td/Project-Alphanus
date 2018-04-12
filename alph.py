@@ -78,7 +78,15 @@ class aclient(discord.Client):
 						f1.close()
 						print("Restarting.")
 						os.execl(sys.executable, sys.executable, *sys.argv, "update")
-
+			    elif message.content.startswith("ping"):
+			    	channel = message.channel
+			    	t1 = time.perf_counter()
+					await message.channel.trigger_typing()
+					t2 = time.perf_counter()
+					embed = discord.Embed()
+					embed.set_author(name="Pong")
+					embed.add_field(name="Time", value='{}ms'.format(round((t2-t1)*1000)))
+					await message.author.send(embed=embed)
 				else:
 					print("..But they're an admin. That's okay.")
 					embed = discord.Embed(colour=discord.Colour(0x4a90e2))
