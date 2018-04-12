@@ -3,4 +3,4 @@
     - "3.6"
   install: pip install -U configparser discord.py requests raven
   script:
-    - pytest alph.py
+    - pytest alph.py test
