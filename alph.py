@@ -72,10 +72,12 @@ class aclient(discord.Client):
 					if float(r.text) == version:
 						await message.author.send("I'm already at the latest version. I don't need to update.")
 					else:
+						await message.author.send("Downloading...")
 						r = requests.get("https://raw.githubusercontent.com/AegisTeam/Project-Alphanus/master/alph.py")
 						f1 = open('./alph.py', 'w+')
 						f1.write(r.text)
 						f1.close()
+						await message.author.send("Restarting...")
 						print("Restarting.")
 						os.execl(sys.executable, sys.executable, *sys.argv, "update")
 				elif message.content.startswith("ping"):
