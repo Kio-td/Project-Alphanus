@@ -13,11 +13,7 @@ setup_logging(handler)
 logger = logging.getLogger(__name__)
 logger.addHandler(handler)
 sys.stderr = logger.error
-version = 2.0
-
-if "test" in sys.argv:
-	print("I've been made to work! Yay!")
-	sys.exit(0)
+version = 2.01
 
 if "update" in sys.argv:
 	config = configparser.ConfigParser()
@@ -125,7 +121,7 @@ class aclient(discord.Client):
 		print("--Info--")
 		print("I am user " + client.user.name + "#" + str(client.user.discriminator))
 		print("On " + str(len(client.guilds)) + " guilds")
-		print("With 4 commands")
+		print("With 5 commands")
 		print("Current Version: " + str(version))
 		if float(r.text) != version:
 			print("Version " + r.text + " is available! please update ASAP!")
