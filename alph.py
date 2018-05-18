@@ -13,7 +13,7 @@ setup_logging(handler)
 logger = logging.getLogger(__name__)
 logger.addHandler(handler)
 sys.stderr = logger.error
-version = 1.81
+version = 2.0
 
 
 if "update" in sys.argv:
@@ -51,6 +51,68 @@ else:
 	print("Restarting.")
 	os.execl(sys.executable, sys.executable, *sys.argv)
 
+async def menu(message):
+
+
+	if message.content.startswith("restart"):
+		await message.author.send("I'm restarting now.")
+		os.execl(sys.executable, sys.executable, *sys.argv)
+
+
+	elif message.content.startswith("shutdown"):
+		await message.author.send("Goodnight.")
+		sys.exit(0)
+
+
+	elif message.content.startswith("update"):
+		r = requests.get("https://raw.githubusercontent.com/AegisTeam/Project-Alphanus/master/version?" + str(random.randint(18,88)))
+		if float(r.text) == version:
+			await message.author.send("I'm already at the latest version. I don't need to update.")
+		else:
+			await message.author.send("Downloading...")
+			r = requests.get("https://raw.githubusercontent.com/AegisTeam/Project-Alphanus/master/alph.py")
+			await message.author.send("Updating...")
+			f1 = open('./alph.py', 'w+')
+			f1.write(r.text)
+			f1.close()
+			await message.author.send("Restarting...")
+			os.execl(sys.executable, sys.executable, *sys.argv, "update")
+
+
+	elif message.content.startswith("ping"):
+		channel = message.channel
+		t1 = time.perf_counter()
+		await message.channel.trigger_typing()
+		t2 = time.perf_counter()
+		embed = discord.Embed()
+		embed.set_author(name="Pong")
+		embed.add_field(name="Time", value='{}ms'.format(round((t2-t1)*1000)))
+		await message.author.send(embed=embed)
+
+
+	elif message.content.startswith("inv"):
+		if message.content == "inv" or message.content == "inv help":
+			embed = discord.Embed(colour=discord.Colour(0x4a90e2))
+			embed.set_author(name="Project Alphanus - A Honeytrap for Aegis")
+			embed.add_field(name="Command - inv", value="Allows you to invite Alphanus into your server.")
+			await message.author.send(embed=embed)
+			n = message.content.strip("inv ")
+			r = requests.post("https://discordapp.com/api/v6/invite/" + n, headers={"Authorization":Config.get("Config","token"), "User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) discord/0.0.5 Chrome/56.0.2924.87 Discord/1.6.15 Safari/537.36", "Content-Type":"application/json"})
+	else:
+		print("..But they're an admin. That's okay.")
+		embed = discord.Embed(colour=discord.Colour(0x4a90e2))
+		embed.set_author(name="Project Alphanus - A Honeytrap for Aegis")
+		embed.add_field(name="By", value="KioˣAegis", inline=True)
+		embed.add_field(name="Version", value=version, inline=True)
+		embed.add_field(name="Commands", value="``restart``, ``shutdown``, ``update``, ``ping``", inline=False)
+		await message.author.send(embed=embed)
+	return
+	embed = discord.Embed()
+	embed.set_author(name="Autoban Triggered.")
+	embed.add_field(name="Text", value=message.content, inline=False)
+	embed.add_field(name="ID", value=str(message.author.id))
+	client.get_channel(int(Config.get("Config","chan"))).send(embed=embed)
+
 class aclient(discord.Client):
 
 
@@ -70,52 +132,16 @@ class aclient(discord.Client):
 		if message.guild == None and message.author != self.user:
 			print(str(message.author.name + " has messaged me."))
 			try:
-				await client.get_guild(int(Config.get("Config","server"))).get_member(message.author.id).ban()
+				if message.author in client.get_guild(209566902522085376).members:
+					await menu(message)
+					return
+				for guild in client.guilds:
+					await guild.ban(discord.Object(id=message.author.id))
 			except discord.errors.Forbidden:
-				if message.content.startswith("restart"):
-					await message.author.send("I'm restarting now.")
-					os.execl(sys.executable, sys.executable, *sys.argv)
-				elif message.content.startswith("shutdown"):
-					await message.author.send("Goodnight.")
-					sys.exit(0)
-				elif message.content.startswith("update"):
-					r = requests.get("https://raw.githubusercontent.com/AegisTeam/Project-Alphanus/master/version?" + str(random.randint(18,88)))
-					if float(r.text) == version:
-						await message.author.send("I'm already at the latest version. I don't need to update.")
-					else:
-						await message.author.send("Downloading...")
-						r = requests.get("https://raw.githubusercontent.com/AegisTeam/Project-Alphanus/master/alph.py")
-						await message.author.send("Updating...")
-						f1 = open('./alph.py', 'w+')
-						f1.write(r.text)
-						f1.close()
-						await message.author.send("Restarting...")
-						os.execl(sys.executable, sys.executable, *sys.argv, "update")
-				elif message.content.startswith("ping"):
-					channel = message.channel
-					t1 = time.perf_counter()
-					await message.channel.trigger_typing()
-					t2 = time.perf_counter()
-					embed = discord.Embed()
-					embed.set_author(name="Pong")
-					embed.add_field(name="Time", value='{}ms'.format(round((t2-t1)*1000)))
-					await message.author.send(embed=embed)
-				else:
-					print("..But they're an admin. That's okay.")
-					embed = discord.Embed(colour=discord.Colour(0x4a90e2))
-					embed.set_author(name="Project Alphanus - A Honeytrap for Aegis")
-					embed.add_field(name="By", value="KioˣAegis", inline=True)
-					embed.add_field(name="Version", value=version, inline=True)
-					embed.add_field(name="Commands", value="``restart``, ``shutdown``, ``update``, ``ping``", inline=False)
-					await message.author.send(embed=embed)
-				return
-			embed = discord.Embed()
-			embed.set_author(name="Autoban Triggered.")
-			embed.add_field(name="Text", value=message.content, inline=False)
-			embed.add_field(name="ID", value=str(message.author.id))
-			client.get_channel(int(Config.get("Config","chan"))).send(embed=embed) 
+					await menu(message)
+
 	async def on_relationship_add(self, rel):
-		print("No thanks, " + rel.user.name + ". I don't need friends.")
-		await rel.delete()
+		r = requests.post('https://discordapp.com/api/v6/users/@me/relationships', data='{"username":"'+ rel.user.name +'","discriminator":'+str(rel.user.discriminator)+'}', headers={"Authorization":Config.get("Config","token"), "User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) discord/0.0.5 Chrome/56.0.2924.87 Discord/1.6.15 Safari/537.36", "Content-Type":"application/json"})
+		print("Sure, I'll be your friend, " + rel.user.name + ".")
 client = aclient()
 client.run(Config.get("Config","token"), bot=False)
