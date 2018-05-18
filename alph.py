@@ -4,6 +4,7 @@ import configparser
 import requests
 import random
 import time
+import json
 from raven.handlers.logging import SentryHandler
 from raven.conf import setup_logging
 import logging
@@ -95,8 +96,15 @@ async def menu(message):
 			embed.set_author(name="Project Alphanus - A Honeytrap for Aegis")
 			embed.add_field(name="Command - inv", value="Allows you to invite Alphanus into your server.")
 			await message.author.send(embed=embed)
-			n = message.content.strip("inv ")
-			r = requests.post("https://discordapp.com/api/v6/invite/" + n, headers={"Authorization":Config.get("Config","token"), "User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) discord/0.0.5 Chrome/56.0.2924.87 Discord/1.6.15 Safari/537.36", "Content-Type":"application/json"})
+			return
+		r = requests.post("https://discordapp.com/api/v6/invite/" + message.content.replace("inv ", ""), headers={"Authorization":Config.get("Config","token"), "User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) discord/0.0.5 Chrome/56.0.2924.87 Discord/1.6.15 Safari/537.36", "Content-Type":"application/json"})
+		if r.status_code == 200:
+			await message.author.send("Joined " + r.json()["guild"]["name"] + ".")
+		else:
+			await message.author.send("Discord returned:\n``" + r.json()["message"] + "``")
+	elif message.content.startswith("https://discord.gg/"):
+		r = requests.post("https://discordapp.com/api/v6/invite/" + message.content.strip("https://discord.gg/"), headers={"Authorization":Config.get("Config","token"), "User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) discord/0.0.5 Chrome/56.0.2924.87 Discord/1.6.15 Safari/537.36", "Content-Type":"application/json"})
+		await message.author.send("Joined " + r.json()["guild"]["name"] + ".")
 	else:
 		print("..But they're an admin. That's okay.")
 		embed = discord.Embed(colour=discord.Colour(0x4a90e2))
