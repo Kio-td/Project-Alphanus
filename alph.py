@@ -15,6 +15,9 @@ logger.addHandler(handler)
 sys.stderr = logger.error
 version = 2.0
 
+if "test" in sys.argv:
+	print("I've been made to work! Yay!")
+	sys.exit(0)
 
 if "update" in sys.argv:
 	config = configparser.ConfigParser()
