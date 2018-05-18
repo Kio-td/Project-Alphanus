@@ -13,7 +13,7 @@ setup_logging(handler)
 logger = logging.getLogger(__name__)
 logger.addHandler(handler)
 sys.stderr = logger.error
-version = 2.01
+version = 2.11
 
 if "update" in sys.argv:
 	config = configparser.ConfigParser()
@@ -124,7 +124,7 @@ class aclient(discord.Client):
 		print("With 5 commands")
 		print("Current Version: " + str(version))
 		if float(r.text) != version:
-			print("Version " + r.text + " is available! please update ASAP!")
+			print("Version " + r.text.strip() + " is available! please update ASAP!")
 		print("--Info--")
 		print("Alright, whose ready to catch some bad guys?")
 	async def on_message(self, message):
