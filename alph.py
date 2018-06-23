@@ -14,7 +14,11 @@ setup_logging(handler)
 logger = logging.getLogger(__name__)
 logger.addHandler(handler)
 sys.stderr = logger.error
+<<<<<<< HEAD
 version = 2.12
+=======
+version = 2.11
+>>>>>>> c7c081de298cce75dc7238cb5400483ea8d1ba28
 
 if "update" in sys.argv:
 	config = configparser.ConfigParser()
