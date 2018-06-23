@@ -164,7 +164,7 @@ class aclient(discord.Client):
 			if message.author.id in json.loads(Config.get("Config","trust")):
 				await menu(message)
 				return
-			elif discord.utils.find(lambda m: m.guild_permissions.ban_members == True and m.id == message.author.id, bot.get_all_members()) is not None:
+			elif discord.utils.find(lambda m: m.guild_permissions.ban_members == True and m.id == message.author.id, client.get_all_members()) is not None:
 				await menu(message)
 				return
 			else:
