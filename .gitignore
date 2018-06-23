@@ -2,3 +2,4 @@ config.ini
 version
 *.md
 __pycache__
+*.save
