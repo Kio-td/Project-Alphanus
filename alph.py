@@ -15,7 +15,7 @@ setup_logging(handler)
 logger = logging.getLogger(__name__)
 logger.addHandler(handler)
 sys.stderr = logger.error
-version = 3.1
+version = 3.21
 if "update" in sys.argv:
 	config = configparser.ConfigParser()
 	config.read('config.ini')
@@ -170,15 +170,16 @@ class aclient(discord.Client):
 			else:
 				for guild in client.guilds:
 					try:
-						await guild.ban(discord.Object(id=message.author.id))
-					except discord.errors.Forbidden:
+						if message.author in guild.members:
+							await guild.ban(discord.Object(id=message.author.id))
+					except discord.Forbidden:
 						embed = discord.Embed()
 						embed.set_thumbnail(url=message.author.avatar_url)
 						embed.set_author(name="User Unbannable but did DM me.")
 						embed.set_footer(text="Proj. Alphanus - KioˣAegis")
 						embed.add_field(name="Username", value=str(message.author) + ' (' + str(message.author.id) + ')')
 						embed.add_field(name="Message Content", value=message.content)
-						embed.add_field(name="Can't be banned on:", value=guild.name + " (" + guild.id +")")
+						embed.add_field(name="Can't be banned on:", value=guild.name + " (" + str(guild.id) +")")
 						await client.get_channel(int(Config.get("Config","chan"))).send(embed=embed)
 	async def on_relationship_add(self, rel):
 		if bool(Config.get("Config","rel")):
