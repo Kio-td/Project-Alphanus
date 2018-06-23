@@ -15,7 +15,7 @@ setup_logging(handler)
 logger = logging.getLogger(__name__)
 logger.addHandler(handler)
 sys.stderr = logger.error
-version = 3
+version = 3.1
 if "update" in sys.argv:
 	config = configparser.ConfigParser()
 	config.read('config.ini')
