@@ -1,3 +1,4 @@
+from distutils import util as distutils
 import discord
 import os, sys
 import configparser
@@ -14,7 +15,7 @@ setup_logging(handler)
 logger = logging.getLogger(__name__)
 logger.addHandler(handler)
 sys.stderr = logger.error
-version = 2.2
+version = 2.22
 if "update" in sys.argv:
 	config = configparser.ConfigParser()
 	config.read('config.ini')
@@ -32,15 +33,16 @@ if "update" in sys.argv:
 	if config.get("Config","trust", fallback=False) is False:
 		Trust= input("Please enter users that Alphanus will trust, seperated by a comma and space.\nIDs: ")
 		Trust= Trust.split(", ")
+		Trust= json.dumps(Trust)
 		config.set("Config","trust", Trust)
 	if config.get("Config","own", fallback=False) is False:
 		Owner= input("Please enter the user ID of the owner: ")
 		config.set("Config","own", Owner)
 	if config.get("Config","rel", fallback="ek") is "ek":
 		rel = ""
-		while rel.lower() != "y" or rel.lower() != "n":
-			rel= input("Do you wish for Alphanus to make friends?: [y\n] ")
-		config.set("Config","rel", bool(distutils.util.strtobool(rel)))
+		while rel.lower() not in ["y", "n"]:
+			rel= input("Do you wish for Alphanus to make friends?: [y\\n] ")
+		config.set("Config","rel", str(distutils.strtobool(str(rel))))
 	with open('config.ini', 'w') as configfile:
 		config.write(configfile)
 	print("Updated. Restarting.")
@@ -56,13 +58,15 @@ else:
 	Token= input("please enter your NON-BOT Token: ")
 	Server= input("Please enter your Server's 18 digit ID: ")
 	Channel= input("Please enter the 18 digit ID of the channel P.A. will log to: ")
-	Trust= input("Please enter user IDs that Alphanus will trust, seperated by a comma and space.\nIDs: ")
+	Trust= input("Please enter users that Alphanus will trust, seperated by a comma and space.\nIDs: ")
+	Trust= Trust.split(", ")
+	Trust= json.dumps(Trust)
 	Owner= input("Please enter the user ID of the owner: ")
 	rel = ""
-	while rel.lower() != "y" or rel.lower() != "n":
-		rel= input("Do you wish for Alphanus to make friends? [y\n]")
+	while rel.lower() not in ["y", "n"]:
+		rel= input("Do you wish for Alphanus to make friends? [y\\n]")
 	f1=open('./config.ini', 'w+')
-	f1.write('[Config]\ntoken: '+Token+"\nserver:"+Server+"\nchan:"+Channel+"\ntrust:"+Trust+"\nown:"+Owner+"\nrel:"+bool(distutils.util.strtobool(rel))+"\n")
+	f1.write('[Config]\ntoken: '+Token+"\nserver:"+Server+"\nchan:"+Channel+"\ntrust:"+Trust+"\nown:"+Owner+"\nrel:"+str(distutils.strtobool(rel))+"\n")
 	f1.close()
 	print("Restarting.")
 	os.execl(sys.executable, sys.executable, *sys.argv)
@@ -76,7 +80,7 @@ async def menu(message):
 
 
 	elif message.content.startswith("shutdown"):
-		if message.author.id == Config.get("Config","own"):
+		if message.author.id == int(Config.get("Config","own")):
 			await message.author.send("Goodnight.")
 			sys.exit(0)
 		else:
@@ -158,7 +162,7 @@ class aclient(discord.Client):
 		if message.guild == None and message.author != self.user:
 			print(str(message.author.name + " has messaged me."))
 			try:
-				if message.author.id in Config.get("Config","trust"):
+				if message.author.id in json.loads(Config.get("Config","trust")):
 					await menu(message)
 					return
 				for guild in client.guilds:
@@ -167,7 +171,7 @@ class aclient(discord.Client):
 					await menu(message)
 
 	async def on_relationship_add(self, rel):
-		if Config.get("Config","rel"):
+		if bool(Config.get("Config","rel")):
 			r = requests.post('https://discordapp.com/api/v6/users/@me/relationships', data='{"username":"'+ rel.user.name +'","discriminator":'+str(rel.user.discriminator)+'}', headers={"Authorization":Config.get("Config","token"), "User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) discord/0.0.5 Chrome/56.0.2924.87 Discord/1.6.15 Safari/537.36", "Content-Type":"application/json"})
 			print("Sure, I'll be your friend, " + rel.user.name + ".")
 		else:
