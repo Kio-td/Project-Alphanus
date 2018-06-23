@@ -15,7 +15,7 @@ setup_logging(handler)
 logger = logging.getLogger(__name__)
 logger.addHandler(handler)
 sys.stderr = logger.error
-version = 2.22
+version = 3
 if "update" in sys.argv:
 	config = configparser.ConfigParser()
 	config.read('config.ini')
@@ -161,15 +161,25 @@ class aclient(discord.Client):
 	async def on_message(self, message):
 		if message.guild == None and message.author != self.user:
 			print(str(message.author.name + " has messaged me."))
-			try:
-				if message.author.id in json.loads(Config.get("Config","trust")):
-					await menu(message)
-					return
+			if message.author.id in json.loads(Config.get("Config","trust")):
+				await menu(message)
+				return
+			elif discord.utils.find(lambda m: m.guild_permissions.ban_members == True and m.id == message.author.id, bot.get_all_members()) is not None:
+				await menu(message)
+				return
+			else:
 				for guild in client.guilds:
-					await guild.ban(discord.Object(id=message.author.id))
-			except discord.errors.Forbidden:
-					await menu(message)
-
+					try:
+						await guild.ban(discord.Object(id=message.author.id))
+					except discord.errors.Forbidden:
+						embed = discord.Embed()
+						embed.set_thumbnail(url=message.author.avatar_url)
+						embed.set_author(name="User Unbannable but did DM me.")
+						embed.set_footer(text="Proj. Alphanus - KioˣAegis")
+						embed.add_field(name="Username", value=str(message.author) + ' (' + str(message.author.id) + ')')
+						embed.add_field(name="Message Content", value=message.content)
+						embed.add_field(name="Can't be banned on:", value=guild.name + " (" + guild.id +")")
+						await client.get_channel(int(Config.get("Config","chan"))).send(embed=embed)
 	async def on_relationship_add(self, rel):
 		if bool(Config.get("Config","rel")):
 			r = requests.post('https://discordapp.com/api/v6/users/@me/relationships', data='{"username":"'+ rel.user.name +'","discriminator":'+str(rel.user.discriminator)+'}', headers={"Authorization":Config.get("Config","token"), "User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) discord/0.0.5 Chrome/56.0.2924.87 Discord/1.6.15 Safari/537.36", "Content-Type":"application/json"})
