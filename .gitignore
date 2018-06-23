@@ -1,3 +1,4 @@
 config.ini
 version
 *.md
+__pycache__
