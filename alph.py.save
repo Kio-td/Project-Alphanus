@@ -14,7 +14,7 @@ setup_logging(handler)
 logger = logging.getLogger(__name__)
 logger.addHandler(handler)
 sys.stderr = logger.error
-version = 2.2
+version = 2.12
 if "update" in sys.argv:
 	config = configparser.ConfigParser()
 	config.read('config.ini')
@@ -32,15 +32,11 @@ if "update" in sys.argv:
 	if config.get("Config","trust", fallback=False) is False:
 		Trust= input("Please enter users that Alphanus will trust, seperated by a comma and space.\nIDs: ")
 		Trust= Trust.split(", ")
-		config.set("Config","trust", Trust)
+		config.set("Config"."trust")
 	if config.get("Config","own", fallback=False) is False:
 		Owner= input("Please enter the user ID of the owner: ")
-		config.set("Config","own", Owner)
-	if config.get("Config","rel", fallback="ek") is "ek":
-		rel = ""
-		while rel.lower() != "y" or rel.lower() != "n":
-			rel= input("Do you wish for Alphanus to make friends?: [y\n] ")
-		config.set("Config","rel", bool(distutils.util.strtobool(rel)))
+		config.set("Config"."own")
+	if config.get("Config",
 	with open('config.ini', 'w') as configfile:
 		config.write(configfile)
 	print("Updated. Restarting.")
@@ -58,11 +54,8 @@ else:
 	Channel= input("Please enter the 18 digit ID of the channel P.A. will log to: ")
 	Trust= input("Please enter user IDs that Alphanus will trust, seperated by a comma and space.\nIDs: ")
 	Owner= input("Please enter the user ID of the owner: ")
-	rel = ""
-	while rel.lower() != "y" or rel.lower() != "n":
-		rel= input("Do you wish for Alphanus to make friends? [y\n]")
 	f1=open('./config.ini', 'w+')
-	f1.write('[Config]\ntoken: '+Token+"\nserver:"+Server+"\nchan:"+Channel+"\ntrust:"+Trust+"\nown:"+Owner+"\nrel:"+bool(distutils.util.strtobool(rel))+"\n")
+	f1.write('[Config]\ntoken: '+Token+"\nserver:"+Server+"\nchan:"+Channel+"\ntrust:"+Trust+"\nown:"+Owner)
 	f1.close()
 	print("Restarting.")
 	os.execl(sys.executable, sys.executable, *sys.argv)
@@ -158,7 +151,7 @@ class aclient(discord.Client):
 		if message.guild == None and message.author != self.user:
 			print(str(message.author.name + " has messaged me."))
 			try:
-				if message.author.id in Config.get("Config","trust"):
+				if message.author.id in Config.get("Config"."trust"):
 					await menu(message)
 					return
 				for guild in client.guilds:
