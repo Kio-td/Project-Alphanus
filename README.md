@@ -7,7 +7,7 @@ Everyone knows that spammers are smart enough to avoid the owner of the server, 
 
 # Grumpy!
 Discord has completely banned Selfbots, and this self-bot was created in 2018.
-It uses V6. You *will* be banned for using this, as it's almost certain that you'll be fully banned.
+It uses V6. You *will* be banned for using this, as it's almost certain that v6 has been turned into a trap for old self-bot scripts.
 Although Alphanus was made with good intentions, it's fully against TOS.
 
 ## Install
